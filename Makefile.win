@@ -1,0 +1,43 @@
+# Project: Graphic
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = main.o Graphic.o PNGpicture.o Chunk.o zlib.o BMPpicture.o
+LINKOBJ  = main.o Graphic.o PNGpicture.o Chunk.o zlib.o BMPpicture.o
+LIBS     = -L"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/lib" -L"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
+INCS     = -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/include" -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/x86_64-w64-mingw32/include" -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/include" -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/x86_64-w64-mingw32/include" -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Users/kkoltunski/Desktop/Klaudiusz Ko速u雟ki/NAUKA/C++/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = Graphic.exe
+CXXFLAGS = $(CXXINCS) -std=gnu++11 -g3
+CFLAGS   = $(INCS) -std=gnu++11 -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+Graphic.o: Graphic.cpp
+	$(CPP) -c Graphic.cpp -o Graphic.o $(CXXFLAGS)
+
+PNGpicture.o: PNGpicture.cpp
+	$(CPP) -c PNGpicture.cpp -o PNGpicture.o $(CXXFLAGS)
+
+Chunk.o: Chunk.cpp
+	$(CPP) -c Chunk.cpp -o Chunk.o $(CXXFLAGS)
+
+zlib.o: zlib.cpp
+	$(CPP) -c zlib.cpp -o zlib.o $(CXXFLAGS)
+
+BMPpicture.o: BMPpicture.cpp
+	$(CPP) -c BMPpicture.cpp -o BMPpicture.o $(CXXFLAGS)

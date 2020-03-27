@@ -1,0 +1,4 @@
+# Picture samples should be ignored #
+#####################################
+*.png
+*.bmp
