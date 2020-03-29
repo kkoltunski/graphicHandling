@@ -16,7 +16,7 @@ int main(int argc, char *argv []){
 	Graphic *pToBMP = new BMPpicture(path + fileName);
 	pToBMP->options();
 	
-	//string path = R"(C:\Users\kkoltunski\Desktop\Klaudiusz Ko³tuñski\NAUKA\C++\00_Projects\00_Real\Graphic\)";
+//	string path = R"(C:\Users\kkoltunski\Desktop\Klaudiusz Ko³tuñski\NAUKA\C++\00_Projects\00_Real\Graphic\)";
 //////////////////////////////BMP///////////////////////////////////
 /*	Graphic *pToTiger = new BMPpicture(path + "00_tiger" + ".bmp");
 	pToTiger->negative();*/
@@ -24,7 +24,11 @@ int main(int argc, char *argv []){
 /*	Graphic *pToMarbles = new BMPpicture(path + "00_marbles" + ".bmp");
 	pToMarbles->negative();*/
 	
-//	Graphic *pToGrayLena = new BMPpicture(path + "00_graylena" + ".bmp");
+/*	Graphic *pToGrayLena = new BMPpicture(path + "00_graylena" + ".bmp");
+	pToGrayLena->negative();*/
+	
+/*	Graphic *pToLand = new BMPpicture(path + "00_land" + ".bmp");
+	pToLand->negative();*/
 	
 //////////////////////////////PNG///////////////////////////////////	
 /*	Graphic *pToTriangleDice = new PNGpicture(path + "01_triangleDice" + ".png");
