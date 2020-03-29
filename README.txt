@@ -10,3 +10,7 @@
 -function BMPpicture::negative() was rebuilded for other options (8/16/32 bpp) as well (maybe not so elegant but simpliest and shortest what i came up with);
 -function BMPpicture::makeHeader() was rebuilded to BMPpicture::makeFile() which will manage wholl action acording to new file creatiion operations (will be universal
 	function called at begining of every operation);
+
+TO_DO:
+-more test
+-compression / decompression algorithms;
