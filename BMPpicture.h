@@ -41,10 +41,14 @@ struct imgHeader{
 	friend std::ostream& operator<<(std::ostream &out, imgHeader &imgHeader);		 
 };
 
-struct pixel{										//In pixels data field oposite direction because of little endian
-	unsigned char Blue,
-				  Green,
-				  Red;
+struct pixelBGR{									//In pixels data field oposite direction because of little endian
+	protected:
+		unsigned char Blue,
+					  Green,
+					  Red,
+					  Alpha;						//is not used - should be 0x0
+					  
+	friend class BMPpicture;
 };
 
 class BMPpicture : public Graphic
@@ -52,12 +56,14 @@ class BMPpicture : public Graphic
 	private:
 		fileHeader picIntro;					//File header structure
 		imgHeader picSettings;					//Image header structure
+		vector<std::fstream::pos_type> colorTable; //Positions to pixel indexed colours pos 0 = pix 0, pos 1 = pix 1 etc...
 		
-		//construktor for the future solutions
+		//construktor for the future solutions(?)
 		bool checkFile() override;				//f. for preliminary file check
 		void getSettings() override; 			//f. for metadata extraction
+		void getColorIndex();					//f. to get positions of indexed color in orginal file
 		
-		void makeHeader();
+		bool makeFile(string _operation);		//f for new file basic operation 
 		
 	public:
 		BMPpicture(string _path);
