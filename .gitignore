@@ -2,6 +2,7 @@
 ##############################################
 *.filters
 *.user
+Debug
 
 # Picture samples should be ignored #
 #####################################

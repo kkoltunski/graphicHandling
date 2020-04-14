@@ -1,61 +1,51 @@
 #include "PNGpicture.h"
 
-extern std::ostream& operator<<(std::ostream &out, IHDR &var);
+template<typename T>
+void bigToLittle(T &_valToSwap) {					//Endians handshake
+	T result{ 0x0000 };
+	unsigned short ct = (sizeof(T));
 
-PNGpicture::PNGpicture(string _path) : Graphic{_path}{
-	signature = 727905341920923785;					//137 80 78 71 13 10 26 10 added as byte's
-	checkFile();
-}
-
-PNGpicture::~PNGpicture(){
-	for(int i = 0; i < fileChunks.size(); ++i){
-		delete fileChunks[i];
+	if (ct > 1) {
+		for (int i = 0; i < ct; ++i) {
+			result <<= 8;
+			result += (_valToSwap & 0xFF);
+			_valToSwap >>= 8;
+		}
+		_valToSwap = result;
 	}
 }
 
-bool PNGpicture::checkFile(){
-	if(pic.is_open()){
-		if(validateSignature(8)){						//Check if PNG file (PNG signature)
-			chunkingF();
+PNGpicture::PNGpicture(string _path) : Graphic{_path, ".png"}{
+	signature = 727905341920923785;					//137 80 78 71 13 10 26 10 added as byte's
+
+	if (checkFileExtension()) {
+		if (validateSignature(8)) {
+			partitioning();
 			getSettings();
 			extractZlibHeader();
-			
+
 			std::cout << "PNG PICTURE SETTINGS";
 			std::cout << picSettings;
 			std::cout << "\nzLib Header info\n";
-			std::cout << "zlibHeader.CMF = " << zlibHeader.CMF << std::endl;
-			std::cout << "zlibHeader.CINFO = " << zlibHeader.CINFO << std::endl;
-			std::cout << "zlibHeader.FCHECK = " << zlibHeader.FCHECK << std::endl;
-			std::cout << "zlibHeader.FDICT = " << zlibHeader.FDICT << std::endl;
-			std::cout << "zlibHeader.FLEVEL = " << zlibHeader.FLEVEL << std::endl;
-			std::cout << "zlibHeader Window = " << zlibHeader.calcWindow() << std::endl;
-			std::cout << "zlibHeader.DHB.BFINAL = " << std::boolalpha << (bool)zlibHeader.DHB.BFINAL << std::endl;
-			std::cout << "zlibHeader.DHB.BTYPE = " << (int)zlibHeader.DHB.BTYPE << std::endl;
-			
+			std::cout << zlibHeader;
 		}
-		else{
-			std::cout << "signature nok" << std::endl;
-		}
-	}
-	else{
-		std::cout << "Wrong file path" << std::endl;
-		pic.clear();
-		filePath = "";	
 	}
 }
 
-void PNGpicture::chunkingF(){	
+PNGpicture::~PNGpicture() noexcept(true) {
+	for(int i = 0; i < fileChunks.size(); ++i) delete fileChunks[i];
+}
+
+void PNGpicture::partitioning(){
 	if(!pic.fail() && (pic.tellg() == 8)){
 		for(;pic.tellg() != EOF;){
 			auto *pToChunk = new Chunk("temp");					//memory allocation for new chunk
 
 			pToChunk->begOfChunk = pic.tellg();					//Position of chunk begining
 			
-			auto *pToIngridient = (char*)&pToChunk->dataLength;	//Length of DATA field
-			for(int i = 3; i >= 0; --i){						//BigEndian => Little endian handshake
-				pic.read(pToIngridient + i, 1);
-			}
-			
+			pic.read((char*)&pToChunk->dataLength, 4);
+			bigToLittle(pToChunk->dataLength);
+
 			pic.read((char*)&pToChunk->chunkType[0], 4);		//chunk type
 			pToChunk->criticalChunk = (pToChunk->chunkType[0] > 96 ? false : true);
 			
@@ -75,21 +65,16 @@ void PNGpicture::chunkingF(){
 	}
 }
 
-void PNGpicture::getSettings(){
+void PNGpicture::getSettings() noexcept(true) {
 	pic.seekg(fileChunks[0]->chunkDataPos, std::ios_base::beg);	//chunk [0] is IHDR always
 	
 //IHDR INFO	
-	auto *pToDim = (char*)&picSettings.width;		//BigEndian => Little endian handshake
-	for(int i = 3; i >= 0; --i){
-		pic.read(pToDim + i, 1);
-	}
-	
-	pToDim = (char*)&picSettings.height;			//BigEndian => Little endian handshake
-	for(int i = 3; i >= 0; --i){
-		pic.read(pToDim + i, 1);
-	}
-	//pic.read((char*)&picSettings.width, 4);		//Done by code above - byte swap necessary
-	//pic.read((char*)&picSettings.height, 4);		//Done by code above - byte swap necessary
+	pic.read((char*)&picSettings.width, 4);
+	bigToLittle(picSettings.width);
+
+	pic.read((char*)&picSettings.height, 4);
+	bigToLittle(picSettings.height);
+
 	pic.read((char*)&picSettings.bitDepth, 1);
 	pic.read((char*)&picSettings.colorType, 1);
 	pic.read((char*)&picSettings.compressionMeth, 1);
@@ -97,18 +82,27 @@ void PNGpicture::getSettings(){
 	pic.read((char*)&picSettings.intelaceMeth, 1);
 }
 
-void PNGpicture::extractZlibHeader(){
-	unsigned int pos {};
-	for(; pos <= fileChunks.size(); ++pos){			//Find first IDAT block (it contains zlib header)
-		if(fileChunks[pos]->chunkType != "IDAT")	continue;		
-		else	break;
-		
-		//if(pos == fileChunks.size()) throw std::out_of_range("IDAT chunk not found");
+void PNGpicture::extractZlibHeader() throw (chunkIsNotExist) {
+	try {
+		unsigned int pos{0};
+
+		for (; pos <= fileChunks.size(); ++pos) {			//Find first IDAT block (it contains zlib header)
+			if (fileChunks[pos]->chunkType != "IDAT")	continue;
+			else	break;
+		}
+		if (pos == fileChunks.size()) throw (chunkIsNotExist("IDAT"));
+
+		pic.seekg(fileChunks[pos]->chunkDataPos, std::ios_base::beg);	//Set position
+		pic.read((char*)&zlibHeader, 3);				//and get zlib Header + data header bits
+	}
+	catch (chunkIsNotExist& Exception) {
+		cout << Exception.what() << endl;
 	}
 	
-	pic.seekg(fileChunks[pos]->chunkDataPos, std::ios_base::beg);	//Set position
-	pic.read((char*)&zlibHeader, 3);				//and get zlib Header + data header bits
-	
+}
+
+std::ofstream& PNGpicture::negative(){
+	return operationResult;
 }
 
 //HELP FUNCTION
@@ -131,4 +125,33 @@ void PNGpicture::showChunkData(int inList){
 		int temp = pic.get();
 		std::cout << "IDAT byte[" << i << "] = " /*<< std::hex*/ << temp << std::endl;
 	}
+}
+
+//Operator used to show IHDR chunk of PNG image
+std::ostream& operator<<(std::ostream& outStream, IHDR& var) {
+	outStream //<< "\nFile path : " << var.filePath
+		<< "\nIHDR.width = " << var.width
+		<< "\nIHDR.height = " << var.height
+		<< "\nIHDR.bitDepth = " << static_cast<int>(var.bitDepth)
+		<< "\nIHDR.colorType = " << static_cast<int>(var.colorType)
+		<< "\nIHDR.compressionMeth = " << static_cast<int>(var.compressionMeth)
+		<< "\nIHDR.filterMeth = " << static_cast<int>(var.filterMeth)
+		<< "\nIHDR.intelaceMeth = " << static_cast<int>(var.intelaceMeth) << endl;
+
+	return outStream;
+}
+
+//Operator used to show zlib header of IDAT chunk
+std::ostream& operator<<(std::ostream& outStream, zlibHeader& zlibHeader) {
+	outStream //<< "\nFile path : " << var.filePath
+		<< "zlibHeader.CMF = " << zlibHeader.CMF << std::endl
+		<< "zlibHeader.CINFO = " << zlibHeader.CINFO << std::endl
+		<< "zlibHeader.FCHECK = " << zlibHeader.FCHECK << std::endl
+		<< "zlibHeader.FDICT = " << zlibHeader.FDICT << std::endl
+		<< "zlibHeader.FLEVEL = " << zlibHeader.FLEVEL << std::endl
+		<< "zlibHeader Window = " << zlibHeader.calcWindow() << std::endl
+		<< "zlibHeader.DHB.BFINAL = " << std::boolalpha << (bool)zlibHeader.DHB.BFINAL << std::endl
+		<< "zlibHeader.DHB.BTYPE = " << (int)zlibHeader.DHB.BTYPE << std::endl;
+
+	return outStream;
 }

@@ -1,7 +1,7 @@
 #include "header.h"
 
 int main(int argc, char *argv []){	
-	string path {argv[1]}, fileName {};
+/*	string path {argv[1]}, fileName {};
 	
 	cout << "Directory : " << path << endl;
 	cout << "Type .bmp file name (extension format will be added) located in above directory : ";
@@ -14,27 +14,28 @@ int main(int argc, char *argv []){
 		
 	cout << endl << fileName << endl;
 	Graphic *pToBMP = new BMPpicture(path + fileName);
-	pToBMP->options();
+	pToBMP->options();*/
 	
-//	string path = R"(C:\Users\kkoltunski\Desktop\Klaudiusz Ko³tuñski\NAUKA\C++\00_Projects\00_Real\Graphic\)";
+	string path = R"(C:\Users\kkoltunski\Desktop\GRAPHIC\)";
 //////////////////////////////BMP///////////////////////////////////
-/*	Graphic *pToTiger = new BMPpicture(path + "00_tiger" + ".bmp");
-	pToTiger->negative();*/
+	Graphic *pToTiger = new BMPpicture(path + "00_tiger" + ".bmp");
+	pToTiger->options();
 
-/*	Graphic *pToMarbles = new BMPpicture(path + "00_marbles" + ".bmp");
-	pToMarbles->negative();*/
+	Graphic *pToMarbles = new BMPpicture(path + "00_marbles" + ".bmp");
+	pToMarbles->options();
 	
-/*	Graphic *pToGrayLena = new BMPpicture(path + "00_graylena" + ".bmp");
-	pToGrayLena->negative();*/
+	Graphic *pToGrayLena = new BMPpicture(path + "00_graylena" + ".bmp");
+	pToGrayLena->options();
 	
-/*	Graphic *pToLand = new BMPpicture(path + "00_land" + ".bmp");
-	pToLand->negative();*/
+	Graphic *pToLand = new BMPpicture(path + "00_land" + ".bmp");
+	//pToLand->negative();
+	pToLand->options();
 	
 //////////////////////////////PNG///////////////////////////////////	
-/*	Graphic *pToTriangleDice = new PNGpicture(path + "01_triangleDice" + ".png");
+	Graphic *pToTriangleDice = new PNGpicture(path + "01_triangleDice" + ".png");
 	PNGpicture *ptoTD = dynamic_cast<PNGpicture*>(pToTriangleDice);
 	ptoTD->showChunks();
-	ptoTD->showChunkData(5);*/
+	ptoTD->showChunkData(5);
 	
 /*	Graphic *pTo3x3 = new PNGpicture(path + "01_3x3" + ".png");
 	PNGpicture *pto33 = dynamic_cast<PNGpicture*>(pTo3x3);
@@ -56,7 +57,6 @@ int main(int argc, char *argv []){
 	PNGpicture *pToGLena = dynamic_cast<PNGpicture*>(pToLenaGreyScale);
 	pToGLena->showChunks();
 	pToGLena->showChunkData(4);*/
-	
-	
+
 	return 0;
 }
