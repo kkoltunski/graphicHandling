@@ -11,6 +11,9 @@
 -function BMPpicture::makeHeader() was rebuilded to BMPpicture::makeFile() which will manage wholl action acording to new file creatiion operations (will be universal
 	function called at begining of every operation);
 
+14.04.2020 v0.3
+-Code completely reviewed - added new variables, functions, some classes were rebuilded, some were moved to other files, errors handling were added
+
 TO_DO:
 -more test
 -compression / decompression algorithms;
