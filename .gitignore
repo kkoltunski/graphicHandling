@@ -1,4 +1,10 @@
+# VisualStudio files which should be ignored #
+##############################################
+*.filters
+*.user
+
 # Picture samples should be ignored #
 #####################################
 *.png
 *.bmp
+
