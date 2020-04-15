@@ -19,17 +19,17 @@ int main(int argc, char *argv []){
 	string path = R"(C:\Users\kkoltunski\Desktop\GRAPHIC\)";
 //////////////////////////////BMP///////////////////////////////////
 	Graphic *pToTiger = new BMPpicture(path + "00_tiger" + ".bmp");
-	pToTiger->options();
+	pToTiger->picturePossibleOperations();
 
 	Graphic *pToMarbles = new BMPpicture(path + "00_marbles" + ".bmp");
-	pToMarbles->options();
+	pToMarbles->picturePossibleOperations();
 	
 	Graphic *pToGrayLena = new BMPpicture(path + "00_graylena" + ".bmp");
-	pToGrayLena->options();
+	pToGrayLena->picturePossibleOperations();
 	
 	Graphic *pToLand = new BMPpicture(path + "00_land" + ".bmp");
 	//pToLand->negative();
-	pToLand->options();
+	pToLand->picturePossibleOperations();
 	
 //////////////////////////////PNG///////////////////////////////////	
 	Graphic *pToTriangleDice = new PNGpicture(path + "01_triangleDice" + ".png");

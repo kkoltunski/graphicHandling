@@ -4,34 +4,34 @@ extern string changeToLowerCases(string _in);
 
 Graphic::Graphic(string &_path, string &&_extension) : filePath{ _path }, formatExtension{ _extension }{
 	try {
-		pic.open(filePath, std::ios_base::in | std::ios_base::binary);
+		originalPicture.open(filePath, std::ios_base::in | std::ios_base::binary);
 	
-		if (!pic.is_open()) throw(openingFileError(filePath));
+		if (!originalPicture.is_open()) throw(openingFileError(filePath));
 	}
 	catch (openingFileError& Exception) {
-		pic.clear();
+		originalPicture.clear();
 		cout << Exception.what() << endl;
 		terminate();
 	}
 }
 
 Graphic::~Graphic(){
-	pic.close();
-	operationResult.close();
+	originalPicture.close();
+	operationResultPicture.close();
 }
 
 Tulli Graphic::getFileSignature(unsigned int _bytesToCheck, std::fstream::pos_type _beg) {
 	Tulli takenToCheck{};
 
-	if (!pic.fail()) {
-		pic.seekg(_beg, std::ios_base::beg);
-		pic.read((char*)&takenToCheck, _bytesToCheck);
+	if (!originalPicture.fail()) {
+		originalPicture.seekg(_beg, std::ios_base::beg);
+		originalPicture.read((char*)&takenToCheck, _bytesToCheck);
 	}
 
 	return takenToCheck;
 }
 
-bool Graphic::checkFileExtension() throw(badFileExtension) {
+bool Graphic::checkFileExtensionOnFilePath() noexcept(false) {
 	try {
 		string help = changeToLowerCases(filePath);
 		size_t extensionFormatPos = help.rfind(formatExtension);
@@ -46,11 +46,11 @@ bool Graphic::checkFileExtension() throw(badFileExtension) {
 	}
 }
 
-bool Graphic::validateSignature(unsigned int _bytesToCheck, std::fstream::pos_type _beg) throw(unequalSignature){
+bool Graphic::isFileSignatureValid(unsigned int _bytesToCheck, std::fstream::pos_type _beg) noexcept(false) {
 	try {
 		Tulli readedSignature = getFileSignature(_bytesToCheck, _beg);
 
-		if (readedSignature != signature) throw(unequalSignature(std::to_string(readedSignature), std::to_string(signature)));
+		if (readedSignature != formatSignature) throw(unequalSignature(std::to_string(readedSignature), std::to_string(formatSignature)));
 		else return true;
 	}
 	catch (unequalSignature &Exception) {
@@ -59,7 +59,7 @@ bool Graphic::validateSignature(unsigned int _bytesToCheck, std::fstream::pos_ty
 	}
 }
 
-void Graphic::options(){
+void Graphic::picturePossibleOperations(){
 	std::cout << "At this moment only negative function is possible." << std::endl;
 	negative();
 }

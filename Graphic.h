@@ -19,21 +19,21 @@ protected:
 	Tulli getFileSignature(unsigned int _bytesToCheck, std::fstream::pos_type _beg = 0);
 
 public:
-	Graphic(string &_path, string &&_extension) throw(openingFileError);
+	Graphic(string &_path, string &&_extension) noexcept(false);
 	virtual ~Graphic() noexcept(true);
 			
-	void options();										//Function should return adress to choosen operation
+	void picturePossibleOperations() ;
 		
 protected:
-	std::string filePath;								//File path	
-	Tulli signature;									//signature of format
+	std::string filePath;
+	Tulli formatSignature;
 	const string formatExtension;
-	std::ifstream pic;									//Fstream to file
-	std::ofstream operationResult;						//Fstream to new file
+	std::ifstream originalPicture;
+	std::ofstream operationResultPicture;
 		
-	virtual bool checkFileExtension() throw(badFileExtension);	//f. to check file extension format in given path to file
-	virtual bool validateSignature(unsigned int _bytesToCheck, std::fstream::pos_type _beg = 0) throw(unequalSignature) ;	//f. for check file signature
-	virtual void getSettings() noexcept(true) = 0;		//f. for metadata extraction
+	virtual bool checkFileExtensionOnFilePath() noexcept(false);
+	virtual bool isFileSignatureValid(unsigned int _bytesToCheck, std::fstream::pos_type _beg = 0) noexcept(false);
+	virtual void getMetadata() noexcept(true) = 0;
 
 	virtual std::ofstream& negative() = 0;
 };

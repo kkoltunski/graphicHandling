@@ -14,6 +14,10 @@
 14.04.2020 v0.3
 -Code completely reviewed - added new variables, functions, some classes were rebuilded, some were moved to other files, errors handling were added
 
+15.04.2020 v0.4
+-Code were cleaned of stupid, unnecessary comments 
+-some changes in names of functions / variables
+
 TO_DO:
 -more test
--compression / decompression algorithms;
+-compression / decompression algorithms for PNG format;

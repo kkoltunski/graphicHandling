@@ -12,19 +12,19 @@ using std::vector;
 using std::string;
 using std::fstream;		
 
-/*chunk schem representation
+/*chunk scheme representation
 |LENGTH|CHUNK_TYPE|CHUNK_DATA = optional|CRC|*/
 struct Chunk {
 private:
-	std::fstream::pos_type begOfChunk;				//1st length byte
-	unsigned int chunkLenght;						//bytes in chunk
+	std::fstream::pos_type begining;
+	unsigned int chunkLenght;
 	bool criticalChunk;								//0 ancillary , 1 critical
 
-	unsigned int dataLength;						//length of data field in chunk
-	string chunkType;								//chunk Name
-	std::fstream::pos_type chunkDataPos;			//begining of data field in chunk							
+	unsigned int dataFieldLength;
+	string type;
+	std::fstream::pos_type dataFieldBegining;						
 
-	Chunk(const char _name[]) : chunkType{ _name } {
+	Chunk(const char _name[]) : type{ _name } {
 	}
 
 	friend class PNGpicture;
@@ -44,6 +44,7 @@ private:
 	friend std::ostream& operator<<(std::ostream &out, IHDR &var);
 };
 
+/*RFC1950 zlib compressed data format*/
 struct dataHeaderBits {
 public:
 	unsigned char BFINAL : 1,						//0s bit - should be set only for last data block
@@ -52,7 +53,8 @@ public:
 	friend struct zlibHeader;
 };
 
-/*zlib header schem representation
+/* RFC1950 zlib compressed data format
+zlib header scheme representation
 |CMF|FLG|*/
 struct zlibHeader {									//zlib header structure which comes from fisrt IDAT chunk and Deflate algorithm						
 private:
@@ -64,7 +66,7 @@ private:
 
 	dataHeaderBits DHB;								//have to be checked for each IDAT?
 
-	inline int calcWindow() {						//f. for future decoding
+	inline int calcWindow() {
 		return std::pow(2, (CINFO + 8));
 	}
 
@@ -79,9 +81,9 @@ private:
 	IHDR picSettings;
 	zlibHeader zlibHeader;
 
-	void getSettings() noexcept(true) override;		//f. for metadata extraction
-	void partitioning();							//f. for chunking file
-	void extractZlibHeader() throw (chunkIsNotExist);	//f. to extract info necessarry for decoding
+	void getMetadata() noexcept(true) override;
+	void filePartitioning();
+	void extractZlibHeader() noexcept(false);
 	std::ofstream& negative() override;
 
 public:

@@ -1,22 +1,19 @@
 #include "BMPpicture.h"
 
 BMPpicture::BMPpicture(string _path) : Graphic{_path, ".bmp"}{
-	signature = 19778;								//66 77 ASCII - There is many possible signatures but only "BM" is supported by Windows - rest are OS/2 (IBM)
+	formatSignature = 19778;								//66 77 ASCII - There is many possible signatures but only "BM" is supported by Windows - rest are OS/2 (IBM)
 
-	if (checkFileExtension()) {
-		if (validateSignature(2)) {
-			getSettings();
-			calculateDependencies();
+	if (checkFileExtensionOnFilePath()) {
+		if (isFileSignatureValid(2)) {
+			getMetadata();
+			calculatePixelFormat();
+			if(isColorTableExist()) getColorTable();
 
-			if (picSettings.biCompression) {			//Decompression is necessary
-				std::cout << "Decompression necessary" << std::endl;
-			}
-
-			if (picSettings.biClrUsed) getColorIndex();	//Color table is necessary
+			if (pictureSettings.biCompression)	std::cout << "Decompression necessary" << std::endl;
 
 			std::cout << "BMP PICTURE SETTINGS";
-			std::cout << picHeader;
-			std::cout << picSettings << std::endl;
+			std::cout << pictureHeader;
+			std::cout << pictureSettings << std::endl;
 		}
 	}
 }
@@ -25,35 +22,43 @@ BMPpicture::~BMPpicture() noexcept(true) {
 	
 }
 
-void BMPpicture::getSettings() noexcept(true) {
+void BMPpicture::getMetadata() noexcept(true) {
 //FILE HEADER INFO
-	pic.seekg(0, std::ios_base::beg);					//File header begining
-	pic.read((char*)&picHeader.bfType, 2);
-	pic.read((char*)&picHeader.bfSize, 4);
-	pic.read((char*)&picHeader.bfReserved1, 2);
-	pic.read((char*)&picHeader.bfReserved2, 2);
-	pic.read((char*)&picHeader.bfOffBits, 4);
+	originalPicture.seekg(0, std::ios_base::beg);
+	originalPicture.read((char*)&pictureHeader.bfType, 2);
+	originalPicture.read((char*)&pictureHeader.bfSize, 4);
+	originalPicture.read((char*)&pictureHeader.bfReserved1, 2);
+	originalPicture.read((char*)&pictureHeader.bfReserved2, 2);
+	originalPicture.read((char*)&pictureHeader.bfOffBits, 4);
 
 //IMAGE HEADER INFO
-	pic.read((char*)&picSettings.biSize, 4);
-	pic.read((char*)&picSettings.biWidth, 4);
-	pic.read((char*)&picSettings.biHeight, 4);
-	pic.read((char*)&picSettings.biPlanes, 2);
-	pic.read((char*)&picSettings.biBitCount, 2);
-	pic.read((char*)&picSettings.biCompression, 4);
-	pic.read((char*)&picSettings.biSizeImage, 4);
-	pic.read((char*)&picSettings.biXPelsPerMeter, 4);
-	pic.read((char*)&picSettings.biYPelsPerMeter, 4);
-	pic.read((char*)&picSettings.biClrUsed, 4);
-	pic.read((char*)&picSettings.biClrImportant, 4);
+	originalPicture.read((char*)&pictureSettings.biSize, 4);
+	originalPicture.read((char*)&pictureSettings.biWidth, 4);
+	originalPicture.read((char*)&pictureSettings.biHeight, 4);
+	originalPicture.read((char*)&pictureSettings.biPlanes, 2);
+	originalPicture.read((char*)&pictureSettings.biBitCount, 2);
+	originalPicture.read((char*)&pictureSettings.biCompression, 4);
+	originalPicture.read((char*)&pictureSettings.biSizeImage, 4);
+	originalPicture.read((char*)&pictureSettings.biXPelsPerMeter, 4);
+	originalPicture.read((char*)&pictureSettings.biYPelsPerMeter, 4);
+	originalPicture.read((char*)&pictureSettings.biClrUsed, 4);
+	originalPicture.read((char*)&pictureSettings.biClrImportant, 4);
 }
 
-void BMPpicture::calculateDependencies() throw(unknowPixelFormat) {
-	try {
-		colorTableBegining = picSettings.biSize + (sizeof(picHeader) - 2);							// "-2" is necessary because of memory rounding to words
+bool BMPpicture::isColorTableExist() noexcept(true) {
+	if (pictureSettings.biClrUsed == 256) colorTableExist = true;
+	return colorTableExist;
+}
 
-		if (picSettings.biClrUsed) pixelFormatSize = ((picHeader.bfOffBits - colorTableBegining) / picSettings.biClrUsed); //Result should be 4(BRGA) or 3(BRG) depend on pixel representation
-		else pixelFormatSize = (picSettings.biBitCount / 8);
+void BMPpicture::getColorTable() noexcept(true) {
+		colorTableBegining = pictureSettings.biSize + (sizeof(pictureHeader) - 2);		// "-2" is necessary because of memory rounding to whole words
+		getColorIndexes();
+}
+
+void BMPpicture::calculatePixelFormat() noexcept(false) {
+	try {
+		if (pictureSettings.biClrUsed) pixelFormatSize = ((pictureHeader.bfOffBits - colorTableBegining) / pictureSettings.biClrUsed);
+		else pixelFormatSize = (pictureSettings.biBitCount / 8);
 
 		if ((pixelFormatSize != 3) && (pixelFormatSize != 4)) throw(unknowPixelFormat(std::to_string(pixelFormatSize)));
 	}
@@ -62,13 +67,14 @@ void BMPpicture::calculateDependencies() throw(unknowPixelFormat) {
 	}
 }
 
-void BMPpicture::getColorIndex() noexcept(true) {
+void BMPpicture::getColorIndexes() noexcept(true) {
 	/*color table is array which contain indexed colors of pixel.
-	Each pixel has his own index which point here.*/
-	pic.seekg(colorTableBegining, std::ios_base::beg);							//color table begining
-	for(;pic.tellg() != picHeader.bfOffBits;){									//save positions of each index in vector 
-		colorTable.push_back(pic.tellg());
-		pic.seekg(pixelFormatSize, std::ios_base::cur);
+	Each pixel has his own index which point here. Color of pixel[0] = colorTable[0]*/
+	originalPicture.seekg(colorTableBegining, std::ios_base::beg);
+
+	for(;originalPicture.tellg() != pictureHeader.bfOffBits;){
+		colorTable.push_back(originalPicture.tellg());
+		originalPicture.seekg(pixelFormatSize, std::ios_base::cur);
 	}
 }
 
@@ -76,40 +82,40 @@ string BMPpicture::rebuildPathForNewFile(string &&_operationName) {
 	return filePath.insert(filePath.find(formatExtension), _operationName);
 }
 
-bool BMPpicture::makeFile(string _operation) throw(openingFileError) {
+bool BMPpicture::makeFile(string _operation) noexcept(false) {
 	try {
-		string resultFilePath = rebuildPathForNewFile("_" + _operation);		//Prepare file path for output file
+		string resultFilePath = rebuildPathForNewFile("_" + _operation);
 
-		operationResult.close();
-		operationResult.open(resultFilePath, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+		operationResultPicture.close();
+		operationResultPicture.open(resultFilePath, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
 
-		if (!operationResult.is_open())	throw(openingFileError{ resultFilePath });
+		if (!operationResultPicture.is_open())	throw(openingFileError{ resultFilePath });
 
 		//FILE HEADER INFO
-		operationResult.seekp(0, std::ios_base::beg);					//File header begining
-		operationResult.write((char*)&picHeader.bfType, 2);
-		operationResult.write((char*)&picHeader.bfSize, 4);
-		operationResult.write((char*)&picHeader.bfReserved1, 2);
-		operationResult.write((char*)&picHeader.bfReserved2, 2);
-		operationResult.write((char*)&picHeader.bfOffBits, 4);
+		operationResultPicture.seekp(0, std::ios_base::beg);
+		operationResultPicture.write((char*)&pictureHeader.bfType, 2);
+		operationResultPicture.write((char*)&pictureHeader.bfSize, 4);
+		operationResultPicture.write((char*)&pictureHeader.bfReserved1, 2);
+		operationResultPicture.write((char*)&pictureHeader.bfReserved2, 2);
+		operationResultPicture.write((char*)&pictureHeader.bfOffBits, 4);
 
 		//IMAGE HEADER INFO
-		operationResult.write((char*)&picSettings.biSize, 4);
-		operationResult.write((char*)&picSettings.biWidth, 4);
-		operationResult.write((char*)&picSettings.biHeight, 4);
-		operationResult.write((char*)&picSettings.biPlanes, 2);
-		operationResult.write((char*)&picSettings.biBitCount, 2);
-		operationResult.write((char*)&picSettings.biCompression, 4);
-		operationResult.write((char*)&picSettings.biSizeImage, 4);
-		operationResult.write((char*)&picSettings.biXPelsPerMeter, 4);
-		operationResult.write((char*)&picSettings.biYPelsPerMeter, 4);
-		operationResult.write((char*)&picSettings.biClrUsed, 4);
-		operationResult.write((char*)&picSettings.biClrImportant, 4);
+		operationResultPicture.write((char*)&pictureSettings.biSize, 4);
+		operationResultPicture.write((char*)&pictureSettings.biWidth, 4);
+		operationResultPicture.write((char*)&pictureSettings.biHeight, 4);
+		operationResultPicture.write((char*)&pictureSettings.biPlanes, 2);
+		operationResultPicture.write((char*)&pictureSettings.biBitCount, 2);
+		operationResultPicture.write((char*)&pictureSettings.biCompression, 4);
+		operationResultPicture.write((char*)&pictureSettings.biSizeImage, 4);
+		operationResultPicture.write((char*)&pictureSettings.biXPelsPerMeter, 4);
+		operationResultPicture.write((char*)&pictureSettings.biYPelsPerMeter, 4);
+		operationResultPicture.write((char*)&pictureSettings.biClrUsed, 4);
+		operationResultPicture.write((char*)&pictureSettings.biClrImportant, 4);
 
 		return true;
 	}
 	catch (openingFileError &Exception) {
-		operationResult.close();
+		operationResultPicture.close();
 		cout << Exception.what() << endl;
 	}
 }
@@ -117,35 +123,33 @@ bool BMPpicture::makeFile(string _operation) throw(openingFileError) {
 std::ofstream& BMPpicture::negative(){
 	if (makeFile("negative")) {
 
-		if (picSettings.biClrUsed) pic.seekg(colorTableBegining, std::ios_base::beg);			//for color table inversion
-		else pic.seekg(picHeader.bfOffBits, std::ios_base::beg);				//for pixels direct inversion
+		if (colorTableExist) originalPicture.seekg(colorTableBegining, std::ios_base::beg);
+		else originalPicture.seekg(pictureHeader.bfOffBits, std::ios_base::beg);
+		
+		auto pToPix = new pixelBGR;
 
-		auto pToPix = new pixelBGR;												//auxiliary struct
-
-		for (int y = 0; y <= picSettings.biHeight; ++y) {							//Pixels net (height)
-			for (int x = 0; x <= picSettings.biWidth; ++x) {						//Pixels net (width)
-				if (picSettings.biClrUsed && pic.tellg() == colorTableBegining) {	//color table inversion (if exist - only in first entrance to loop when there is color table and reading pointer is set at 54pos)
-					for (; pic.tellg() < picHeader.bfOffBits;) {
-						pic.read((char*)pToPix, pixelFormatSize);
+		for (int y = 0; y <= pictureSettings.biHeight; ++y) {
+			for (int x = 0; x <= pictureSettings.biWidth; ++x) {
+				if (colorTableExist && originalPicture.tellg() == colorTableBegining) {
+					for (; originalPicture.tellg() < pictureHeader.bfOffBits;) {
+						originalPicture.read((char*)pToPix, pixelFormatSize);
 						pToPix->pixelNegative();
-						operationResult.write((char*)pToPix, pixelFormatSize);
+						operationResultPicture.write((char*)pToPix, pixelFormatSize);
 					}
 				}
-				pic.read((char*)pToPix, pixelFormatSize);
-				if (picSettings.biBitCount == 24) pToPix->pixelNegative();
-				operationResult.write((char*)pToPix, pixelFormatSize);
+				originalPicture.read((char*)pToPix, pixelFormatSize);
+				if (pictureSettings.biBitCount == 24) pToPix->pixelNegative();
+				operationResultPicture.write((char*)pToPix, pixelFormatSize);
 			}
 		}
 		delete pToPix;
 		std::cout << "Negative operation done.\n" << std::endl;
-		return operationResult;
+		return operationResultPicture;
 	}
 }
 
-//Operator used to show file header info of BMP pic
 std::ostream& operator<<(std::ostream& outStream, fileHeader& fileHeader) {
-	outStream //<< "\nFile path : " << var.filePath
-		<< "\nfileHeader.bfType = " << fileHeader.bfType
+	outStream << "\nfileHeader.bfType = " << fileHeader.bfType
 		<< "\nfileHeader.bfSize = " << fileHeader.bfSize
 		<< "\nfileHeader.bfReserved1 = " << fileHeader.bfReserved1
 		<< "\nfileHeader.bfReserved2 = " << fileHeader.bfReserved2
@@ -154,10 +158,8 @@ std::ostream& operator<<(std::ostream& outStream, fileHeader& fileHeader) {
 	return outStream;
 }
 
-//Operator used to show image header info of BMP pic
 std::ostream& operator<<(std::ostream& outStream, imgHeader& imgHeader) {
-	outStream //<< "\nFile path : " << var.filePath
-		<< "\nimgHeader.biSize = " << imgHeader.biSize
+	outStream << "\nimgHeader.biSize = " << imgHeader.biSize
 		<< "\nimgHeader.biWidth = " << imgHeader.biWidth
 		<< "\nimgHeader.biHeight = " << imgHeader.biHeight
 		<< "\nimgHeader.biPlanes = " << imgHeader.biPlanes
