@@ -1,0 +1,11 @@
+<map id="errorsHandling.h" name="errorsHandling.h">
+<area shape="rect" id="node1" title="Exceptions structures." alt="" coords="149,5,265,32"/>
+<area shape="rect" id="node2" href="$_graphic_8h.html" title="Abstract class for graphic objects." alt="" coords="167,80,246,107"/>
+<area shape="rect" id="node3" href="$_b_m_ppicture_8h.html" title="Header for .bmp format and all additional structures." alt="" coords="27,155,128,181"/>
+<area shape="rect" id="node5" href="$header_8h.html" title="Main project header." alt="" coords="144,229,216,256"/>
+<area shape="rect" id="node7" href="$_graphic_8cpp.html" title="Methods definitions of Graphic abstract class." alt="" coords="203,155,295,181"/>
+<area shape="rect" id="node8" href="$_p_n_gpicture_8h.html" title="Header for .png format and all additional structures." alt="" coords="319,155,419,181"/>
+<area shape="rect" id="node4" href="$_b_m_ppicture_8cpp.html" title="Methods definitions of BMPpicture class." alt="" coords="5,229,120,256"/>
+<area shape="rect" id="node6" href="$main_8cpp.html" title="Software principle realization." alt="" coords="143,304,217,331"/>
+<area shape="rect" id="node9" href="$_p_n_gpicture_8cpp.html" title="Methods definitions of PNGpicture class." alt="" coords="312,229,427,256"/>
+</map>

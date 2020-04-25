@@ -1,0 +1,72 @@
+\hypertarget{_p_n_gpicture_8cpp}{}\doxysection{P\+N\+Gpicture.\+cpp File Reference}
+\label{_p_n_gpicture_8cpp}\index{PNGpicture.cpp@{PNGpicture.cpp}}
+
+
+Methods definitions of \mbox{\hyperlink{class_p_n_gpicture}{P\+N\+Gpicture}} class.  
+
+
+{\ttfamily \#include \char`\"{}P\+N\+Gpicture.\+h\char`\"{}}\newline
+Include dependency graph for P\+N\+Gpicture.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_p_n_gpicture_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_p_n_gpicture_8cpp_a5ded85359c9f6cee17d7231c1932b581}\label{_p_n_gpicture_8cpp_a5ded85359c9f6cee17d7231c1932b581}} 
+{\footnotesize template$<$typename T $>$ }\\void {\bfseries little\+Endian\+To\+Big\+Endian} (T \&\+\_\+val\+To\+Swap)
+\item 
+std\+::ostream \& \mbox{\hyperlink{_p_n_gpicture_8cpp_a2ada571c618d6556553484deafcfdfb4}{operator$<$$<$}} (std\+::ostream \&out\+Stream, \mbox{\hyperlink{struct_i_h_d_r}{I\+H\+DR}} \&var)
+\item 
+std\+::ostream \& \mbox{\hyperlink{_p_n_gpicture_8cpp_a9fc1fed9abdf31c5a49a12264a9c3745}{operator$<$$<$}} (std\+::ostream \&out\+Stream, \mbox{\hyperlink{structzlib_header}{zlib\+Header}} \&var)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Methods definitions of \mbox{\hyperlink{class_p_n_gpicture}{P\+N\+Gpicture}} class. 
+
+\begin{DoxyAuthor}{Author}
+kkoltunski 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+April 2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_p_n_gpicture_8cpp_a2ada571c618d6556553484deafcfdfb4}\label{_p_n_gpicture_8cpp_a2ada571c618d6556553484deafcfdfb4}} 
+\index{PNGpicture.cpp@{PNGpicture.cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!PNGpicture.cpp@{PNGpicture.cpp}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out\+Stream,  }\item[{\mbox{\hyperlink{struct_i_h_d_r}{I\+H\+DR}} \&}]{var }\end{DoxyParamCaption})}
+
+Overloaded operator to show picture \mbox{\hyperlink{struct_i_h_d_r}{I\+H\+DR}} informations. 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}in\&\mbox{]}} & out\+Stream Reference to stream used as output. \\
+\hline
+{\em \mbox{[}in\&\mbox{]}} & var Reference to \mbox{\hyperlink{structimg_header}{img\+Header}} informations. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to used stream. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_p_n_gpicture_8cpp_a9fc1fed9abdf31c5a49a12264a9c3745}\label{_p_n_gpicture_8cpp_a9fc1fed9abdf31c5a49a12264a9c3745}} 
+\index{PNGpicture.cpp@{PNGpicture.cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!PNGpicture.cpp@{PNGpicture.cpp}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out\+Stream,  }\item[{\mbox{\hyperlink{structzlib_header}{zlib\+Header}} \&}]{var }\end{DoxyParamCaption})}
+
+Overloaded operator to show picture \mbox{\hyperlink{structzlib_header}{zlib\+Header}} informations. 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}in\&\mbox{]}} & out\+Stream Reference to stream used as output. \\
+\hline
+{\em \mbox{[}in\&\mbox{]}} & var Reference to \mbox{\hyperlink{structimg_header}{img\+Header}} informations. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to used stream. 
+\end{DoxyReturn}

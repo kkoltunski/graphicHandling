@@ -1,3 +1,11 @@
+/*****************************************************************//**
+ * \file   PNGpicture.cpp
+ * \brief  Methods definitions of PNGpicture class.
+ * 
+ * \author kkoltunski
+ * \date   April 2020
+***********************************************************************/
+
 #include "PNGpicture.h"
 
 template<typename T>
@@ -15,8 +23,12 @@ void littleEndianToBigEndian(T& _valToSwap) {
 	}
 }
 
+/**
+ * Is defining \ref formatSignature, checking if orginal file is correct and extracting picture metadata which is shown at the end.
+ * \param [in] _path Path to orginal file.
+ */
 PNGpicture::PNGpicture(string _path) : Graphic{_path, ".png"}{
-	formatSignature = 727905341920923785;					//137 80 78 71 13 10 26 10 added as byte's
+	formatSignature = static_cast<Tulli>(pngSignature);					//137 80 78 71 13 10 26 10 added as byte's
 
 	if (checkFileExtensionOnFilePath()) {
 		if (isFileSignatureValid(8)) {
@@ -32,10 +44,16 @@ PNGpicture::PNGpicture(string _path) : Graphic{_path, ".png"}{
 	}
 }
 
+/**
+ * Deleting stored chunks.
+ */
 PNGpicture::~PNGpicture() noexcept(true) {
 	for(int i = 0; i < fileChunks.size(); ++i) delete fileChunks[i];
 }
 
+/**
+ * Method used to extract each chunk information and stored its address.
+ */
 void PNGpicture::filePartitioning(){
 	if(!originalPicture.fail() && (originalPicture.tellg() == 8)){
 		for(;originalPicture.tellg() != EOF;){
@@ -65,6 +83,9 @@ void PNGpicture::filePartitioning(){
 	}
 }
 
+/**
+ * Method used to extract metadata from orginal picture.
+ */
 void PNGpicture::getMetadata() noexcept(true) {
 	originalPicture.seekg(fileChunks[0]->dataFieldBegining, std::ios_base::beg);	//chunk [0] is IHDR always
 	
@@ -82,7 +103,11 @@ void PNGpicture::getMetadata() noexcept(true) {
 	originalPicture.read((char*)&picSettings.intelaceMeth, 1);
 }
 
-void PNGpicture::extractZlibHeader() throw (chunkIsNotExist) {
+/**
+ * Method searching for first "IDAT" chunk and extracting zlibHeader from it
+ * \throw chunkIsNotExist Exception is thrown when "IDAT" chunk is not found.
+ */
+void PNGpicture::extractZlibHeader() noexcept(false) {
 	try {
 		unsigned int pos{0};
 
@@ -101,11 +126,17 @@ void PNGpicture::extractZlibHeader() throw (chunkIsNotExist) {
 	
 }
 
+/**
+ * Method used as algorithm to reverse picture colors to negative.
+ * \return Reference to stream opened as result picture.
+ */
 std::ofstream& PNGpicture::negative(){
 	return operationResultPicture;
 }
 
-//HELP FUNCTION
+/**
+ * Help method used to show extracted chunks informations.
+ */
 void PNGpicture::showChunks(){
 	for(int i = 0; i < fileChunks.size(); ++i){
 		std::cout << "\nfileChunks[" << i << "]->begOfChunk = " << fileChunks[i]->begining << std::endl;
@@ -117,8 +148,12 @@ void PNGpicture::showChunks(){
 	}
 }
 
-void PNGpicture::showChunkData(int inList){
-	Chunk chunkTemp = *fileChunks[inList];
+/**
+ * Method used to show chunk data in chunk specified as _chunkIndex. 
+ * \param [in] _chunkIndex Index to chunk.
+ */
+void PNGpicture::showChunkData(int _chunkIndex){
+	Chunk chunkTemp = *fileChunks[_chunkIndex];
 	
 	originalPicture.seekg(chunkTemp.dataFieldBegining, std::ios_base::beg);
 	for(int i = chunkTemp.dataFieldBegining; i < (static_cast<int>(chunkTemp.dataFieldBegining) + chunkTemp.dataFieldLength); ++i){
@@ -127,6 +162,12 @@ void PNGpicture::showChunkData(int inList){
 	}
 }
 
+/**
+ * Overloaded operator to show picture IHDR informations.
+ * \param [in&] outStream Reference to stream used as output.
+ * \param [in&] var Reference to imgHeader informations.
+ * \return Reference to used stream.
+ */
 std::ostream& operator<<(std::ostream& outStream, IHDR& var) {
 	outStream << "\nIHDR.width = " << var.width
 		<< "\nIHDR.height = " << var.height
@@ -139,15 +180,21 @@ std::ostream& operator<<(std::ostream& outStream, IHDR& var) {
 	return outStream;
 }
 
-std::ostream& operator<<(std::ostream& outStream, zlibHeader& zlibHeader) {
-	outStream << "zlibHeader.CMF = " << zlibHeader.CMF << std::endl
-		<< "zlibHeader.CINFO = " << zlibHeader.CINFO << std::endl
-		<< "zlibHeader.FCHECK = " << zlibHeader.FCHECK << std::endl
-		<< "zlibHeader.FDICT = " << zlibHeader.FDICT << std::endl
-		<< "zlibHeader.FLEVEL = " << zlibHeader.FLEVEL << std::endl
-		<< "zlibHeader Window = " << zlibHeader.calcWindow() << std::endl
-		<< "zlibHeader.DHB.BFINAL = " << std::boolalpha << (bool)zlibHeader.DHB.BFINAL << std::endl
-		<< "zlibHeader.DHB.BTYPE = " << (int)zlibHeader.DHB.BTYPE << std::endl;
+/**
+ * Overloaded operator to show picture zlibHeader informations.
+ * \param [in&] outStream Reference to stream used as output.
+ * \param [in&] var Reference to imgHeader informations.
+ * \return Reference to used stream.
+ */
+std::ostream& operator<<(std::ostream& outStream, zlibHeader& var) {
+	outStream << "zlibHeader.CMF = " << var.CMF << std::endl
+		<< "zlibHeader.CINFO = " << var.CINFO << std::endl
+		<< "zlibHeader.FCHECK = " << var.FCHECK << std::endl
+		<< "zlibHeader.FDICT = " << var.FDICT << std::endl
+		<< "zlibHeader.FLEVEL = " << var.FLEVEL << std::endl
+		<< "zlibHeader Window = " << var.calcWindow() << std::endl
+		<< "zlibHeader.DHB.BFINAL = " << std::boolalpha << static_cast<bool>(var.DHB.BFINAL) << std::endl
+		<< "zlibHeader.DHB.BTYPE = " << static_cast<int>(var.DHB.BTYPE) << std::endl;
 
 	return outStream;
 }

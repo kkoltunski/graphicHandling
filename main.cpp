@@ -1,3 +1,11 @@
+/*****************************************************************//**
+ * \file   main.cpp
+ * \brief  Software principle realization.
+ * 
+ * \author kkoltunski
+ * \date   April 2020
+***********************************************************************/
+
 #include "header.h"
 
 int main(int argc, char *argv []){	

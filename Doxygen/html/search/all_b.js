@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['openingfileerror_31',['openingFileError',['../structopening_file_error.html',1,'openingFileError'],['../structopening_file_error.html#a6402d70039709ce26a7ad0b44668e342',1,'openingFileError::openingFileError()']]],
+  ['operationresultpicture_32',['operationResultPicture',['../class_graphic.html#a690ecfafecf7957d025f9772aeff4a80',1,'Graphic']]],
+  ['operator_3c_3c_33',['operator&lt;&lt;',['../structfile_header.html#afed19f1cb970078dab58b4f24ab55f07',1,'fileHeader::operator&lt;&lt;()'],['../structimg_header.html#a73a1ff7e3a02f139cb2d273fba9f4343',1,'imgHeader::operator&lt;&lt;()'],['../struct_i_h_d_r.html#a48db473f7403eb225255579b962f0ea1',1,'IHDR::operator&lt;&lt;()'],['../structzlib_header.html#a4b53a0469d06cd3888bde2b299361f58',1,'zlibHeader::operator&lt;&lt;()'],['../_b_m_ppicture_8cpp.html#a4688398f7ab12c00dc8c2dd921437f34',1,'operator&lt;&lt;(std::ostream &amp;outStream, fileHeader &amp;fileHeader):&#160;BMPpicture.cpp'],['../_b_m_ppicture_8cpp.html#a967e861b1408ae8e359e188b97cf31b9',1,'operator&lt;&lt;(std::ostream &amp;outStream, imgHeader &amp;imgHeader):&#160;BMPpicture.cpp'],['../_p_n_gpicture_8cpp.html#a2ada571c618d6556553484deafcfdfb4',1,'operator&lt;&lt;(std::ostream &amp;outStream, IHDR &amp;var):&#160;PNGpicture.cpp'],['../_p_n_gpicture_8cpp.html#a9fc1fed9abdf31c5a49a12264a9c3745',1,'operator&lt;&lt;(std::ostream &amp;outStream, zlibHeader &amp;var):&#160;PNGpicture.cpp']]],
+  ['originalpicture_34',['originalPicture',['../class_graphic.html#a4c6db17929f3e2ca3c8064417b4a3a4f',1,'Graphic']]]
+];

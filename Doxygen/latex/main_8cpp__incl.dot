@@ -1,0 +1,31 @@
+digraph "main.cpp"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="main.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Software principle realization."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="header.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$header_8h.html",tooltip="Main project header."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="Graphic.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_graphic_8h.html",tooltip="Abstract class for graphic objects."];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="iostream",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="fstream",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node3 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="vector",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node3 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="errorsHandling.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$errors_handling_8h.html",tooltip="Exceptions structures."];
+  Node3 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="settings.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$settings_8h.html",tooltip="Project main settings."];
+  Node2 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="BMPpicture.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_b_m_ppicture_8h.html",tooltip="Header for .bmp format and all additional structures."];
+  Node10 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="PNGpicture.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_p_n_gpicture_8h.html",tooltip="Header for .png format and all additional structures."];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="stdexcept",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node11 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+}

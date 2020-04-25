@@ -30,6 +30,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="PNGpicture.h" />
+    <ClInclude Include="settings.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

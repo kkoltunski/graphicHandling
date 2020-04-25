@@ -18,6 +18,10 @@
 -Code were cleaned of stupid, unnecessary comments 
 -some changes in names of functions / variables
 
+25.04.2020 v0.5
+-Added coments (necessary to doxygen documentation) and doxygen files.
+-Added settings.h which collect all magic numbers in project.
+
 TO_DO:
 -more test
 -compression / decompression algorithms for PNG format;

@@ -1,7 +1,11 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
+/*****************************************************************//**
+ * \file   header.h
+ * \brief  Main project header.
+ * 
+ * \author kkoltunski
+ * \date   April 2020
+***********************************************************************/
+
 #include "Graphic.h"
 #include "BMPpicture.h"
 #include "PNGpicture.h"
@@ -12,7 +16,13 @@ using std::endl;
 using std::string;
 using std::vector;
 
-string changeToLowerCases(string _in) {
-	for (char singleChar : _in)	singleChar = tolower(singleChar);
-	return _in;
+/**
+ * Converting letter size.
+ * Function is converting each letter in string to lower cases.
+ * \param [in] _inExpression Expression which has to be converted.
+ * \return Expression converted to lower cases.
+ */
+string changeToLowerCases(string _inExpression) {
+	for (char singleChar : _inExpression)	singleChar = tolower(singleChar);
+	return _inExpression;
 }

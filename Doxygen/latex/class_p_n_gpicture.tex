@@ -1,0 +1,101 @@
+\hypertarget{class_p_n_gpicture}{}\doxysection{P\+N\+Gpicture Class Reference}
+\label{class_p_n_gpicture}\index{PNGpicture@{PNGpicture}}
+
+
+{\ttfamily \#include $<$P\+N\+Gpicture.\+h$>$}
+
+
+
+Inheritance diagram for P\+N\+Gpicture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{class_p_n_gpicture__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for P\+N\+Gpicture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{class_p_n_gpicture__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_p_n_gpicture_a33779b7b2700ab9129bd8aeb196b0ef1}{P\+N\+Gpicture}} (string \+\_\+path)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_p_n_gpicture_a892dc840799c705e757fa2b0f402cd48}{$\sim$\+P\+N\+Gpicture}} () noexcept(true) override
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_n_gpicture_a547c47242caadb2601cd12baab3edbbd}{show\+Chunks}} ()
+\begin{DoxyCompactList}\small\item\em Show extracted chunks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_n_gpicture_a2a50409b3c90f482d5c096e79ba14714}{show\+Chunk\+Data}} (int in\+List)
+\begin{DoxyCompactList}\small\item\em Show specified chunk data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Main .png format class. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_p_n_gpicture_a33779b7b2700ab9129bd8aeb196b0ef1}\label{class_p_n_gpicture_a33779b7b2700ab9129bd8aeb196b0ef1}} 
+\index{PNGpicture@{PNGpicture}!PNGpicture@{PNGpicture}}
+\index{PNGpicture@{PNGpicture}!PNGpicture@{PNGpicture}}
+\doxysubsubsection{\texorpdfstring{PNGpicture()}{PNGpicture()}}
+{\footnotesize\ttfamily P\+N\+Gpicture\+::\+P\+N\+Gpicture (\begin{DoxyParamCaption}\item[{string}]{\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Is defining \mbox{\hyperlink{class_graphic_a4abbf249e2b5cd1675ba53b838b20f91}{format\+Signature}}, checking if orginal file is correct and extracting picture metadata which is shown at the end. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+path} & Path to orginal file. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_n_gpicture_a892dc840799c705e757fa2b0f402cd48}\label{class_p_n_gpicture_a892dc840799c705e757fa2b0f402cd48}} 
+\index{PNGpicture@{PNGpicture}!````~PNGpicture@{$\sim$PNGpicture}}
+\index{````~PNGpicture@{$\sim$PNGpicture}!PNGpicture@{PNGpicture}}
+\doxysubsubsection{\texorpdfstring{$\sim$PNGpicture()}{~PNGpicture()}}
+{\footnotesize\ttfamily P\+N\+Gpicture\+::$\sim$\+P\+N\+Gpicture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Destructor. 
+
+Deleting stored chunks. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_p_n_gpicture_a2a50409b3c90f482d5c096e79ba14714}\label{class_p_n_gpicture_a2a50409b3c90f482d5c096e79ba14714}} 
+\index{PNGpicture@{PNGpicture}!showChunkData@{showChunkData}}
+\index{showChunkData@{showChunkData}!PNGpicture@{PNGpicture}}
+\doxysubsubsection{\texorpdfstring{showChunkData()}{showChunkData()}}
+{\footnotesize\ttfamily void P\+N\+Gpicture\+::show\+Chunk\+Data (\begin{DoxyParamCaption}\item[{int}]{\+\_\+chunk\+Index }\end{DoxyParamCaption})}
+
+
+
+Show specified chunk data. 
+
+Method used to show chunk data in chunk specified as \+\_\+chunk\+Index. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+chunk\+Index} & Index to chunk. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_n_gpicture_a547c47242caadb2601cd12baab3edbbd}\label{class_p_n_gpicture_a547c47242caadb2601cd12baab3edbbd}} 
+\index{PNGpicture@{PNGpicture}!showChunks@{showChunks}}
+\index{showChunks@{showChunks}!PNGpicture@{PNGpicture}}
+\doxysubsubsection{\texorpdfstring{showChunks()}{showChunks()}}
+{\footnotesize\ttfamily void P\+N\+Gpicture\+::show\+Chunks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Show extracted chunks. 
+
+Help method used to show extracted chunks informations. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_p_n_gpicture_8h}{P\+N\+Gpicture.\+h}}\item 
+\mbox{\hyperlink{_p_n_gpicture_8cpp}{P\+N\+Gpicture.\+cpp}}\end{DoxyCompactItemize}

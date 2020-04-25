@@ -1,7 +1,19 @@
+/*****************************************************************//**
+ * \file   BMPpicture.cpp
+ * \brief  Methods definitions of BMPpicture class.
+ *
+ * \author kkoltunski
+ * \date   April 2020
+***********************************************************************/
+
 #include "BMPpicture.h"
 
+/**
+ * Is defining \ref formatSignature, checking if orginal file is correct and extracting picture metadata which is shown at the end.
+ * \param [in] _path Path to orginal file.
+ */
 BMPpicture::BMPpicture(string _path) : Graphic{_path, ".bmp"}{
-	formatSignature = 19778;								//66 77 ASCII - There is many possible signatures but only "BM" is supported by Windows - rest are OS/2 (IBM)
+	formatSignature = static_cast<Tulli>(bmpSignature);				//66 77 ASCII - There is many possible signatures but only "BM" is supported by Windows - rest are OS/2 (IBM)
 
 	if (checkFileExtensionOnFilePath()) {
 		if (isFileSignatureValid(2)) {
@@ -22,6 +34,9 @@ BMPpicture::~BMPpicture() noexcept(true) {
 	
 }
 
+/**
+ * Method used to extract metadata from orginal picture.
+ */
 void BMPpicture::getMetadata() noexcept(true) {
 //FILE HEADER INFO
 	originalPicture.seekg(0, std::ios_base::beg);
@@ -45,31 +60,46 @@ void BMPpicture::getMetadata() noexcept(true) {
 	originalPicture.read((char*)&pictureSettings.biClrImportant, 4);
 }
 
+/**
+ * Method which inform if file include color table.
+ * \return True - color table exist, false - color table not exist.
+ */
 bool BMPpicture::isColorTableExist() noexcept(true) {
 	if (pictureSettings.biClrUsed == 256) colorTableExist = true;
 	return colorTableExist;
 }
 
+/**
+ * Method used to extract color table informations such as position and indexes.
+ */
 void BMPpicture::getColorTable() noexcept(true) {
 		colorTableBegining = pictureSettings.biSize + (sizeof(pictureHeader) - 2);		// "-2" is necessary because of memory rounding to whole words
 		getColorIndexes();
 }
 
+/**
+ * Method used to calculate pixel format. It basing on color table (if exist) or bits per pixel information.
+ * \throw unknowPixelFormat Exception which is thrown when pixel format is not recognized.
+ */
 void BMPpicture::calculatePixelFormat() noexcept(false) {
 	try {
 		if (pictureSettings.biClrUsed) pixelFormatSize = ((pictureHeader.bfOffBits - colorTableBegining) / pictureSettings.biClrUsed);
-		else pixelFormatSize = (pictureSettings.biBitCount / 8);
+		else pixelFormatSize = (pictureSettings.biBitCount / bitsPerBytes);
 
-		if ((pixelFormatSize != 3) && (pixelFormatSize != 4)) throw(unknowPixelFormat(std::to_string(pixelFormatSize)));
+		if ((pixelFormatSize != pixelFormatBGR) && (pixelFormatSize != pixelFormatBGRA)) throw(unknowPixelFormat(std::to_string(pixelFormatSize)));
 	}
 	catch (unknowPixelFormat& Exception) {
 		cout << Exception.what() << endl;
 	}
 }
 
+/**
+ * Method used to extract color indexes of pixels from color table.
+ * Color table is array which contain indexed colors of pixel.
+ * Each pixel has his own index which point here. Color of pixel[0] = colorTable[0].
+ */
 void BMPpicture::getColorIndexes() noexcept(true) {
-	/*color table is array which contain indexed colors of pixel.
-	Each pixel has his own index which point here. Color of pixel[0] = colorTable[0]*/
+
 	originalPicture.seekg(colorTableBegining, std::ios_base::beg);
 
 	for(;originalPicture.tellg() != pictureHeader.bfOffBits;){
@@ -78,10 +108,21 @@ void BMPpicture::getColorIndexes() noexcept(true) {
 	}
 }
 
+/**
+ * Method used to rebuilding path to picture being operation result picture.
+ * \param [in] _operationName String which should be added to actual path.
+ * \return Path to operation result picture.
+ */
 string BMPpicture::rebuildPathForNewFile(string &&_operationName) {
 	return filePath.insert(filePath.find(formatExtension), _operationName);
 }
 
+/**
+ * Method used to create new picture and preparing it's metadata before operation.
+ * \param [in] _operation Operation name.
+ * \return True - if creation of operation result file is successfull.
+ * \throw openingFileError Exception is thrown when opening  stream to operation result picture fail.
+ */
 bool BMPpicture::makeFile(string _operation) noexcept(false) {
 	try {
 		string resultFilePath = rebuildPathForNewFile("_" + _operation);
@@ -120,6 +161,10 @@ bool BMPpicture::makeFile(string _operation) noexcept(false) {
 	}
 }
 
+/**
+ * Method used as algorithm to reverse picture colors to negative.
+ * \return Reference to stream opened as result picture.
+ */
 std::ofstream& BMPpicture::negative(){
 	if (makeFile("negative")) {
 
@@ -148,6 +193,12 @@ std::ofstream& BMPpicture::negative(){
 	}
 }
 
+/**
+ * Overloaded operator to show picture fileHeader informations.
+ * \param [in&] outStream Reference to stream used as output.
+ * \param [in&] fileHeader Reference to fileHeader informations.
+ * \return Reference to used stream.
+ */
 std::ostream& operator<<(std::ostream& outStream, fileHeader& fileHeader) {
 	outStream << "\nfileHeader.bfType = " << fileHeader.bfType
 		<< "\nfileHeader.bfSize = " << fileHeader.bfSize
@@ -158,6 +209,12 @@ std::ostream& operator<<(std::ostream& outStream, fileHeader& fileHeader) {
 	return outStream;
 }
 
+/**
+ * Overloaded operator to show picture imgHeader informations.
+ * \param [in&] outStream Reference to stream used as output.
+ * \param [in&] imgHeader Reference to imgHeader informations.
+ * \return Reference to used stream.
+ */
 std::ostream& operator<<(std::ostream& outStream, imgHeader& imgHeader) {
 	outStream << "\nimgHeader.biSize = " << imgHeader.biSize
 		<< "\nimgHeader.biWidth = " << imgHeader.biWidth

@@ -1,0 +1,10 @@
+<map id="Graphic.h" name="Graphic.h">
+<area shape="rect" id="node1" title="Abstract class for graphic objects." alt="" coords="167,5,246,32"/>
+<area shape="rect" id="node2" href="$_b_m_ppicture_8h.html" title="Header for .bmp format and all additional structures." alt="" coords="27,80,128,107"/>
+<area shape="rect" id="node4" href="$header_8h.html" title="Main project header." alt="" coords="144,155,216,181"/>
+<area shape="rect" id="node6" href="$_graphic_8cpp.html" title="Methods definitions of Graphic abstract class." alt="" coords="203,80,295,107"/>
+<area shape="rect" id="node7" href="$_p_n_gpicture_8h.html" title="Header for .png format and all additional structures." alt="" coords="319,80,419,107"/>
+<area shape="rect" id="node3" href="$_b_m_ppicture_8cpp.html" title="Methods definitions of BMPpicture class." alt="" coords="5,155,120,181"/>
+<area shape="rect" id="node5" href="$main_8cpp.html" title="Software principle realization." alt="" coords="143,229,217,256"/>
+<area shape="rect" id="node8" href="$_p_n_gpicture_8cpp.html" title="Methods definitions of PNGpicture class." alt="" coords="312,155,427,181"/>
+</map>

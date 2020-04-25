@@ -1,0 +1,209 @@
+\hypertarget{class_graphic}{}\doxysection{Graphic Class Reference}
+\label{class_graphic}\index{Graphic@{Graphic}}
+
+
+{\ttfamily \#include $<$Graphic.\+h$>$}
+
+
+
+Inheritance diagram for Graphic\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{class_graphic__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Graphic\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{class_graphic__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graphic_ab669d3afceb0a91436a00df7c24bf313}{Graphic}} (string \&\+\_\+path, string \&\&\+\_\+extension) noexcept(false)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_graphic_ab06147069204c06fa43a1baf8662feeb}{$\sim$\+Graphic}} () noexcept(true)
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graphic_adc7b7c4483ce595e85c17dc171c18244}{picture\+Possible\+Operations}} ()
+\begin{DoxyCompactList}\small\item\em Possible operation overview. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Tulli \mbox{\hyperlink{class_graphic_aced67f2e73968743277e809de01971a2}{get\+File\+Signature}} (unsigned int \+\_\+bytes\+To\+Check, std\+::fstream\+::pos\+\_\+type \+\_\+beg=0)
+\begin{DoxyCompactList}\small\item\em Read signature. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_graphic_a8c83267f00c8db8acce68596a39ca673}{check\+File\+Extension\+On\+File\+Path}} () noexcept(false)
+\begin{DoxyCompactList}\small\item\em Checking file extension. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_graphic_a139760c0cdabd4a6f8b9de4a92a67a01}{is\+File\+Signature\+Valid}} (unsigned int \+\_\+bytes\+To\+Check, std\+::fstream\+::pos\+\_\+type \+\_\+beg=0) noexcept(false)
+\begin{DoxyCompactList}\small\item\em File signature checking. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_aa14c2f9d88299882ae3043b5f02d5e17}\label{class_graphic_aa14c2f9d88299882ae3043b5f02d5e17}} 
+virtual void \mbox{\hyperlink{class_graphic_aa14c2f9d88299882ae3043b5f02d5e17}{get\+Metadata}} () noexcept(true)=0
+\begin{DoxyCompactList}\small\item\em Extracting pictrure settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_a6fb5c314faa867da45523c995f754505}\label{class_graphic_a6fb5c314faa867da45523c995f754505}} 
+virtual std\+::ofstream \& \mbox{\hyperlink{class_graphic_a6fb5c314faa867da45523c995f754505}{negative}} ()=0
+\begin{DoxyCompactList}\small\item\em Negative operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}\label{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}} 
+std\+::string \mbox{\hyperlink{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}{file\+Path}}
+\begin{DoxyCompactList}\small\item\em Path to directory with original picture. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_a4abbf249e2b5cd1675ba53b838b20f91}\label{class_graphic_a4abbf249e2b5cd1675ba53b838b20f91}} 
+Tulli \mbox{\hyperlink{class_graphic_a4abbf249e2b5cd1675ba53b838b20f91}{format\+Signature}}
+\begin{DoxyCompactList}\small\item\em Format magic numbers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}\label{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}} 
+const string \mbox{\hyperlink{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}{format\+Extension}}
+\begin{DoxyCompactList}\small\item\em Format extension. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_a4c6db17929f3e2ca3c8064417b4a3a4f}\label{class_graphic_a4c6db17929f3e2ca3c8064417b4a3a4f}} 
+std\+::ifstream \mbox{\hyperlink{class_graphic_a4c6db17929f3e2ca3c8064417b4a3a4f}{original\+Picture}}
+\begin{DoxyCompactList}\small\item\em Stream to orginal picture. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_graphic_a690ecfafecf7957d025f9772aeff4a80}\label{class_graphic_a690ecfafecf7957d025f9772aeff4a80}} 
+std\+::ofstream \mbox{\hyperlink{class_graphic_a690ecfafecf7957d025f9772aeff4a80}{operation\+Result\+Picture}}
+\begin{DoxyCompactList}\small\item\em Stream to picture which is result of operations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract class which represent basic methods and fields of graphics objects. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_graphic_ab669d3afceb0a91436a00df7c24bf313}\label{class_graphic_ab669d3afceb0a91436a00df7c24bf313}} 
+\index{Graphic@{Graphic}!Graphic@{Graphic}}
+\index{Graphic@{Graphic}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{Graphic()}{Graphic()}}
+{\footnotesize\ttfamily Graphic\+::\+Graphic (\begin{DoxyParamCaption}\item[{string \&}]{\+\_\+path,  }\item[{string \&\&}]{\+\_\+extension }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Constructor. 
+
+Trying to open istream to file given as \+\_\+path. 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}in\&\mbox{]}} & \+\_\+path Reference of object which store path to file. \\
+\hline
+{\em \mbox{[}in\&\&\mbox{]}} & \+\_\+extension Extension of file. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{structopening_file_error}{opening\+File\+Error}}} & Exception is thrown when opening stream to original file fail. \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]In the future \mbox{\hyperlink{class_graphic}{Graphic}} can be factory which decide itself which real object has to be created (based on \+\_\+extension). \end{DoxyRefDesc}
+\mbox{\Hypertarget{class_graphic_ab06147069204c06fa43a1baf8662feeb}\label{class_graphic_ab06147069204c06fa43a1baf8662feeb}} 
+\index{Graphic@{Graphic}!````~Graphic@{$\sim$Graphic}}
+\index{````~Graphic@{$\sim$Graphic}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{$\sim$Graphic()}{~Graphic()}}
+{\footnotesize\ttfamily Graphic\+::$\sim$\+Graphic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Destructor. 
+
+Is Closing opened streams. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_graphic_a8c83267f00c8db8acce68596a39ca673}\label{class_graphic_a8c83267f00c8db8acce68596a39ca673}} 
+\index{Graphic@{Graphic}!checkFileExtensionOnFilePath@{checkFileExtensionOnFilePath}}
+\index{checkFileExtensionOnFilePath@{checkFileExtensionOnFilePath}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{checkFileExtensionOnFilePath()}{checkFileExtensionOnFilePath()}}
+{\footnotesize\ttfamily bool Graphic\+::check\+File\+Extension\+On\+File\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Checking file extension. 
+
+Method used to find \mbox{\hyperlink{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}{format\+Extension}} tekst in given \mbox{\hyperlink{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}{file\+Path}}. \begin{DoxyReturn}{Returns}
+True if content of \mbox{\hyperlink{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}{format\+Extension}} is found in given \mbox{\hyperlink{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}{file\+Path}}. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{structbad_file_extension}{bad\+File\+Extension}}} & Exception is thrown when content of \mbox{\hyperlink{class_graphic_a8292fb1655fab2deec6fe0496bab9a0c}{format\+Extension}} is not found in given \mbox{\hyperlink{class_graphic_a7f8a087095c15c5660a8f8fbe0e38fe5}{file\+Path}}. \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_graphic_a8c83267f00c8db8acce68596a39ca673_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_graphic_aced67f2e73968743277e809de01971a2}\label{class_graphic_aced67f2e73968743277e809de01971a2}} 
+\index{Graphic@{Graphic}!getFileSignature@{getFileSignature}}
+\index{getFileSignature@{getFileSignature}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{getFileSignature()}{getFileSignature()}}
+{\footnotesize\ttfamily Tulli Graphic\+::get\+File\+Signature (\begin{DoxyParamCaption}\item[{unsigned int}]{\+\_\+bytes\+To\+Check,  }\item[{std\+::fstream\+::pos\+\_\+type}]{\+\_\+beg = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Read signature. 
+
+Method reading signature from original file. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+bytes\+To\+Check} & Bytes number to read (format signature size in bytes). \\
+\hline
+\mbox{\texttt{ in}}  & {\em \+\_\+beg} & Signature first byte in original file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value of signature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graphic_a139760c0cdabd4a6f8b9de4a92a67a01}\label{class_graphic_a139760c0cdabd4a6f8b9de4a92a67a01}} 
+\index{Graphic@{Graphic}!isFileSignatureValid@{isFileSignatureValid}}
+\index{isFileSignatureValid@{isFileSignatureValid}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{isFileSignatureValid()}{isFileSignatureValid()}}
+{\footnotesize\ttfamily bool Graphic\+::is\+File\+Signature\+Valid (\begin{DoxyParamCaption}\item[{unsigned int}]{\+\_\+bytes\+To\+Check,  }\item[{std\+::fstream\+::pos\+\_\+type}]{\+\_\+beg = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+File signature checking. 
+
+Method used to compare readed signature with model signature. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \+\_\+bytes\+To\+Check} & Bytes number to read (format signature size in bytes). \\
+\hline
+\mbox{\texttt{ in}}  & {\em \+\_\+beg} & Signature first byte in original file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if comparing is done successfull. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{structunequal_signature}{unequal\+Signature}}} & Exception is thrown when readed signature is not equal to standard signature. \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_graphic_a139760c0cdabd4a6f8b9de4a92a67a01_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_graphic_adc7b7c4483ce595e85c17dc171c18244}\label{class_graphic_adc7b7c4483ce595e85c17dc171c18244}} 
+\index{Graphic@{Graphic}!picturePossibleOperations@{picturePossibleOperations}}
+\index{picturePossibleOperations@{picturePossibleOperations}!Graphic@{Graphic}}
+\doxysubsubsection{\texorpdfstring{picturePossibleOperations()}{picturePossibleOperations()}}
+{\footnotesize\ttfamily void Graphic\+::picture\+Possible\+Operations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Possible operation overview. 
+
+Method to show user possible operations on graphic. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=331pt]{class_graphic_adc7b7c4483ce595e85c17dc171c18244_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_graphic_8h}{Graphic.\+h}}\item 
+\mbox{\hyperlink{_graphic_8cpp}{Graphic.\+cpp}}\end{DoxyCompactItemize}
